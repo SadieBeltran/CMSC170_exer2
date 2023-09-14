@@ -2,10 +2,7 @@
 
 https://classroom.google.com/c/NjE5NzU3NDU5Njkz/a/NjIzMjU1NDc3NDc3/details
 
-TODO:
-
-## BFS (FIFO)
-## DFS (FILO)
+## BFS (FIFO) and DFS (FILO)
 - Way to check available moves
 - Keep track of the parent state and the path cost
 - Queue the possible states (imagine a tree)
@@ -13,3 +10,7 @@ TODO:
 - Create a set of explored frontiers.
     - so a way to check if the resulting state exists in the explored set
 
+## TODO:
+- reimplement the game so that GoalTest() accepts a string
+- implement changes from beltranesb_ui_review.py
+- **FIGURE OUT HOW BFS AND DFS WORKS**
