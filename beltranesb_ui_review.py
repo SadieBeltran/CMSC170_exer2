@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkinter.messagebox
 
 #check if the input in puzzle.in is solvable or not
 def solvable(content):
@@ -15,8 +16,14 @@ def ifSolved():
     for i in range(0,7):
         if buttons[i]['text'] != i+1: return False
     if buttons[8]['text'] != 0: return False
-    w.quit()
+    disableAllButtons()
+    tk.messagebox.showinfo("", "you win!")
     return True
+
+def disableAllButtons():
+    for i in range(0,9):
+        buttons[i].config(state="disabled")
+    return
 
 #this function checks if the button being clicked is adjacent (VALID) to the empty tile and swaps it
 def ifValid(row, column):
@@ -54,23 +61,26 @@ with open("puzzle.in", "r") as file:
 #content is a string so we need to remove the spaces
 content = content.replace(" ","")
 content = content.replace("\n","")
+w = tk.Tk()
+w.title("Beltran - 8 game")
+buttons = []
+
+for row in range(0,3):
+    for column in range(0,3):
+        buttons.append(tk.Button(w, text=int(content[row*3+column]),padx=30, pady=30, command=lambda i=row, j=column: ifValid(i,j)))
+        buttons[row*3+column].grid(row=row, column=column)
 
 if not solvable(content):
-    w = tk.Tk()
-    w.title("Beltran - 8 game")
-    buttons = []
-    
-    for row in range(0,3):
-        for column in range(0,3):
-            buttons.append(tk.Button(w, text=int(content[row*3+column]),padx=30, pady=30, command=lambda i=row, j=column: ifValid(i,j)))
-            buttons[row*3+column].grid(row=row, column=column)
-
     solved = ifSolved()
     print(solved)
     while not solved:
         w.mainloop()
         solved = True
         #uhh the string is an array now i think so we can use that to display it in a GUI
-    print("solved!")
 else:
+    tk.Label(w, text="unsolvable!")
+    disableAllButtons()
+    tk.messagebox.showinfo("", "unsolvable!")
+    w.mainloop()
     print("unsolvable!")
+    
