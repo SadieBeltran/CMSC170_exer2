@@ -16,8 +16,14 @@ def goalTest(buttons):
     for i in range(0,7):
         if buttons[i]['text'] != i+1: return False
     if buttons[8]['text'] != 0: return False
-    w.quit()
+    disableAllButtons()
+    tk.messagebox.showinfo("", "you win!")
     return True
+
+def disableAllButtons():
+    for i in range(0,9):
+        buttons[i].config(state="disabled")
+    return
 
 def swap(zero, direction):
     zero['text'] = direction['text']
@@ -62,7 +68,6 @@ def availPaths(zero):
         validPaths = validPaths + 'L'
     if int((zero+1)/3) == int(zero/3):
         validPaths = validPaths + 'R'
-    
 
     return validPaths
 
@@ -79,9 +84,10 @@ def disableAllButtons():
 
 def BFSearch(content, zero):
     print(zero)
-    initialState = content
-    frontier = [content] #list of strings containing the states
+    initialState = content #content is string
+    frontier = {} #list of strings containing the states
     # currentState = frontier.pop()
+    frontier.push(content)
     for action in availPaths(zero):
         match action:
             case "U":
