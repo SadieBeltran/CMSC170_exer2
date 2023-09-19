@@ -87,7 +87,6 @@ def BFSearch(content, zero):
     initialState = content #content is string
     frontier = {} #list of strings containing the states
     # currentState = frontier.pop()
-    frontier.push(content)
     for action in availPaths(zero):
         match action:
             case "U":
