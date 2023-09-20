@@ -85,6 +85,7 @@ def disableAllButtons():
 def BFSearch(content, zero):
     print(zero)
     initialState = content #content is string
+    frontier.push
     frontier = {} #list of strings containing the states
     # currentState = frontier.pop()
     for action in availPaths(zero):

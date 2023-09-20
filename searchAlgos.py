@@ -55,12 +55,14 @@ def bFSearch(content):
     while len(frontier) != 0:
         #while frontier is not empty
         #pop the first element of the frontier
+        print("frontier: "+str(frontier))
         currStatetuple = frontier.pop(0) 
+        print("currstate: "+str(currStatetuple[0]))
         #a tuple containing the current state and the solution path
         #then we check if the current state has already been encountered or solved
         if ifsolved(currStatetuple[0]):
             #return the solution path if solved
-            return str(currStatetuple)
+            return (currStatetuple[1], len(encountered))
         elif not searchEncountered(currStatetuple[0], encountered): 
             #check if currstate has already been encountered. If not...
             solution = currStatetuple[1]
@@ -90,10 +92,10 @@ def dFSearch(content):
     frontier = [(content,'0')]
     encountered = set()
     while len(frontier) != 0:
-        currStatetuple = frontier.pop(-1)
+        currStatetuple = frontier.pop()
         if ifsolved(currStatetuple[0]):
             #return the solution path if solved
-            return str(currStatetuple)
+            return (currStatetuple[1], len(encountered))
         elif not searchEncountered(currStatetuple[0], encountered): 
             #check if currstate has already been encountered. If not...
             solution = currStatetuple[1]
@@ -118,52 +120,12 @@ def dFSearch(content):
                 solution = currStatetuple[1]
     return "no solution found"
         
-        
-def search(content):
-    frontier = [(content, '0')]
-    encountered = set()
-    solution = ''
-    # i = 0
-    # frontier.add()
-    while len(frontier) != 0:
-        # print("\nfrontier: " + str(frontier))
-        currstatetuple = frontier.pop(0)
-        if ifsolved(currstatetuple[0]):
-            # print(currentState)
-            return str(currstatetuple)
-        
-        elif not searchEncountered(currstatetuple[0], encountered):
-            # print("entered elif\n")
-            solution = currstatetuple[1]
-            currentState = currstatetuple[0]
-            zero = findZero(currentState)
-            # print("current state: " + currentState + " zero: " + str(zero))
-            encountered.update((currentState,))
-            for action in availPaths(zero):
-                match action:
-                    case "U":
-                        solution = solution + "U"
-                        frontier.insert(0, (swap(currentState, -3, zero), solution))
-                    case "D":
-                        solution = solution + "D"
-                        frontier.insert(0, (    
-                        swap(currentState, 3, zero), solution))
-                    case "L":
-                        solution = solution + "L"
-                        frontier.insert(0, (swap(currentState, -1, zero),solution))
-                    case "R":
-                        solution = solution + "R"
-                        frontier.insert(0, (swap(currentState, 1, zero),solution))
-                solution = currstatetuple[1]
-        # print("frontier: " + str(frontier))
-        # print("encountered" + str(encountered) + "\n")
-        # i += 1
-        # if i == 10: break
-    return 'There is no solution!'
 content = '123480765'
 # print(ifsolved(content))
 zero = findZero(content)
 # print(swap(content, -3, zero))
-print(dFSearch(content))
+print("input: "+content)
+print("bfS: " + str(bFSearch(content)))
+print("dfS: " + str(dFSearch(content)))
 #find a way to get solution to show the right thing
 #fine a way to properly store the contents of encountered
