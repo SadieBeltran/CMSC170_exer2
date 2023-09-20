@@ -120,12 +120,12 @@ def dFSearch(content):
                 solution = currStatetuple[1]
     return "no solution found"
         
-content = '123480765'
-# print(ifsolved(content))
-zero = findZero(content)
-# print(swap(content, -3, zero))
-print("input: "+content)
-print("bfS: " + str(bFSearch(content)))
-print("dfS: " + str(dFSearch(content)))
+# content = '123480765'
+# # print(ifsolved(content))
+# zero = findZero(content)
+# # print(swap(content, -3, zero))
+# print("input: "+content)
+# print("bfS: " + str(bFSearch(content)))
+# print("dfS: " + str(dFSearch(content)))
 #find a way to get solution to show the right thing
 #fine a way to properly store the contents of encountered
