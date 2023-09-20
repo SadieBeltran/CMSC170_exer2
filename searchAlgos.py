@@ -49,15 +49,16 @@ def searchEncountered(currSet, encountered):
 
 def bFSearch(content):
     #first in first out
-    frontier = [(content, '0')] #initial state
+    zero = findZero(content)
+    frontier = [(content, str(zero))] #initial state
     encountered = set()
 
     while len(frontier) != 0:
         #while frontier is not empty
         #pop the first element of the frontier
-        print("frontier: "+str(frontier))
+        # print("frontier: "+str(frontier))
         currStatetuple = frontier.pop(0) 
-        print("currstate: "+str(currStatetuple[0]))
+        # print("currstate: "+str(currStatetuple[0]))
         #a tuple containing the current state and the solution path
         #then we check if the current state has already been encountered or solved
         if ifsolved(currStatetuple[0]):
@@ -73,26 +74,26 @@ def bFSearch(content):
                 match action:
                     case "U":
                         solution = solution + "U"
-                        frontier.insert(0, (swap(currState, -3, zero), solution))
+                        frontier.append((swap(currState, -3, zero), solution))
                     case "D":
                         solution = solution + "D"
-                        frontier.insert(0, (    
+                        frontier.append((    
                         swap(currState, 3, zero), solution))
                     case "L":
                         solution = solution + "L"
-                        frontier.insert(0, (swap(currState, -1, zero),solution))
+                        frontier.append((swap(currState, -1, zero),solution))
                     case "R":
                         solution = solution + "R"
-                        frontier.insert(0, (swap(currState, 1, zero),solution))
+                        frontier.append((swap(currState, 1, zero),solution))
                 solution = currStatetuple[1]
     return "no solution found"
 
 def dFSearch(content):
     #FIRST IN LAST OUT
-    frontier = [(content,'0')]
+    frontier = [(content, str(findZero(content)))]
     encountered = set()
     while len(frontier) != 0:
-        currStatetuple = frontier.pop()
+        currStatetuple = frontier.pop(0)
         if ifsolved(currStatetuple[0]):
             #return the solution path if solved
             return (currStatetuple[1], len(encountered))
@@ -120,12 +121,11 @@ def dFSearch(content):
                 solution = currStatetuple[1]
     return "no solution found"
         
-# content = '123480765'
-# # print(ifsolved(content))
-# zero = findZero(content)
-# # print(swap(content, -3, zero))
+# content = '230156478'
+# print(ifsolved(content))
+# print(swap(content, -3, zero))
 # print("input: "+content)
-# print("bfS: " + str(bFSearch(content)))
 # print("dfS: " + str(dFSearch(content)))
+# print("bfS: " + str(bFSearch(content)))
 #find a way to get solution to show the right thing
 #fine a way to properly store the contents of encountered
