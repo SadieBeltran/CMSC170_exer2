@@ -3,6 +3,16 @@ def findZero(content):
     for i in range(0,9):
         if int(content[i]) == 0:
             return i
+
+def stateHeuristic(content):
+    h = 0
+    for i in range(0,9):
+        if int(content[i]) == 0:
+            indexHeuristic = abs(i - 8)
+        else:
+            indexHeuristic = abs(i - (int(content[i])-1))
+        h += indexHeuristic
+    return h
         
 def availPaths(zero):
     validPaths = ''
@@ -50,15 +60,13 @@ def searchEncountered(currSet, encountered):
 def bFSearch(content):
     #first in first out
     zero = findZero(content)
-    frontier = [(content, str(zero))] #initial state
+    frontier = [(content, str(zero), 0, -1)] #initial state
     encountered = set()
 
     while len(frontier) != 0:
         #while frontier is not empty
         #pop the first element of the frontier
-        # print("frontier: "+str(frontier))
-        currStatetuple = frontier.pop(0) 
-        # print("currstate: "+str(currStatetuple[0]))
+        currStatetuple = frontier.pop(0)
         #a tuple containing the current state and the solution path
         #then we check if the current state has already been encountered or solved
         if ifsolved(currStatetuple[0]):
@@ -121,11 +129,13 @@ def dFSearch(content):
                 solution = currStatetuple[1]
     return "no solution found"
         
-content = '230156478'
+content = '123405786'
 # print(ifsolved(content))
 # print(swap(content, -3, zero))
 # print("input: "+content)
-print("dfS: " + str(dFSearch(content)))
+# print("dfS: " + str(dFSearch(content)))
 print("bfS: " + str(bFSearch(content)))
+print(stateHeuristic(content))
+# print(str(('hello', 'world', 1, 0)))
 #find a way to get solution to show the right thing
 #fine a way to properly store the contents of encountered
