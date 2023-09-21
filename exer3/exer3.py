@@ -73,7 +73,8 @@ def ifValid(row, column):
     print('not adjacent')
     return 0
 
-def reset(content, buttons):
+def reset():
+    global content, buttons
     for i in range(0,9):
         buttons[i]['text'] = int(content[i])
         buttons[i].config(state='normal',bg='#8ac2ed')
@@ -116,21 +117,23 @@ def step(direction, solutiontuple, buttons):
                     zero = zero-1
     return
 
-def solve(content, buttons, algo):
-    global solstep, zero
+def solve(algo):
+    global solstep, zero, content, buttons
     solstep = 0
-    reset(content, buttons)
+    reset()
     disableAllButtons()
     if algo == 0: #BFS
         solutiontuple = searchAlgos.bFSearch(content)
-    else:
+    elif algo == 1: #DFS
         solutiontuple = searchAlgos.dFSearch(content)
+    else:
+        solutiontuple = aSearch.aSearch(content)
     solvingMode()
 
     if type(solutiontuple) != str:
         stepsFound = len(solutiontuple[0])-1
         zero = int(solutiontuple[0][0])
-        tk.Label(w, text="steps found: "+str(stepsFound)+"\nstates encountered: "+str(solutiontuple[1])).grid(row=5, columnspan=2)
+        tk.Label(w, text="steps found: "+str(stepsFound)+"\nstates encountered: "+str(solutiontuple[1])+"\nsolution: "+solutiontuple[0]).grid(row=5, columnspan=2)
         # print(solutiontuple[0])
 
         tk.Button(w, text=">", command=lambda solutiontuple=solutiontuple, buttons=buttons: step(1,solutiontuple, buttons)).grid(row=6, column=2)
@@ -140,17 +143,18 @@ def solve(content, buttons, algo):
         
     else:
         print("no sol")
-        reset(content, buttons)
+        reset()
 
     return
 
 def getContent():
+    global content, buttons
     with fd.askopenfile() as file:
         content = file.read()
     #content is a string so we need to remove the spaces
     content = content.replace(" ","")
     content = content.replace("\n","")
-    return content
+    reset()
 
 #--------- main function -------
 with open("puzzle.in", "r") as file:
@@ -174,10 +178,11 @@ if not solvable(content):
     solved = goalTest(buttons)
     print(solved)
     while not solved:
-        tk.Button(w, text='Reset', padx=10, pady=20, command=lambda content=content, buttons=buttons: reset(content, buttons)).grid(row=4,column=0)
-        bFSearch = tk.Button(w, text='BFS', padx=10, pady=20, command=lambda content=content, buttons=buttons: solve(content, buttons, 0)).grid(row=4,column=1)
-        dFSearch = tk.Button(w, text='DFS', padx=10, pady=20, command=lambda content=content, buttons=buttons: solve(content, buttons, 1)).grid(row=4,column=2)
-        dFSearch = tk.Button(w, text='open file', padx=10, pady=20, command=lambda :getContent()).grid(row=4,column=3)
+        tk.Button(w, text='Reset', padx=10, pady=20, command=lambda: reset()).grid(row=4,column=0)
+        bFSearch = tk.Button(w, text='BFS', padx=10, pady=20, command=lambda: solve(0)).grid(row=4,column=1)
+        dFSearch = tk.Button(w, text='DFS', padx=10, pady=20, command=lambda: solve(1)).grid(row=4,column=2)
+        dFSearch = tk.Button(w, text='ASearch', padx=10, pady=20, command=lambda: solve(2)).grid(row=4,column=3)
+        dFSearch = tk.Button(w, text='open file', padx=10, pady=20, command=lambda :getContent()).grid(row=4,column=4)
         w.mainloop()
         solved = True
         #uhh the string is an array now i think so we can use that to display it in a GUI
