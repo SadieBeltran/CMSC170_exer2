@@ -65,6 +65,21 @@ def searchEncountered(currSet, encountered):
     # print("not encountered")
     return False
 
+def searchFrontier(currSet, frontier):
+    #remember that frontier contains tuples and you're comparing frontier[0] with the currSet
+    temp = ''
+    for element in frontier:
+        temp = element
+        i=0
+        for i in range(0,9):
+            if int(currSet[i]) != int(element[0][i]):
+                # print(str(i) + "<= i "+ currSet[i] +" <= currSet | element =>" + element[i])
+                #if the set isn't exactly the same, break and move to the next element
+                break
+        if i == 8:
+            return temp
+    return False
+
 def takeH(elem):
     #used to help with sorting really
     return elem[3]
@@ -83,6 +98,7 @@ def aSearch(content):
         frontier.sort(key=takeH)
         # print(str(frontier) + "\n")
         currStatetuple = frontier.pop(0)
+        encountered.update((currStatetuple[0], ))
         if ifsolved(currStatetuple[0]):
             return (currStatetuple[1],  len(encountered), str(len(currStatetuple[1])-1))
         else: 
@@ -90,7 +106,6 @@ def aSearch(content):
             currState = currStatetuple[0]
             stepsTaken = len(solution)-1
             zero = findZero(currState)
-            encountered.update((currState, ))
             for action in availPaths(zero):
                 match action:
                     case "U":
@@ -106,20 +121,26 @@ def aSearch(content):
                         solution = solution + "R"
                         nextState = swap(currState, 1, zero)
                 # print("state: " + nextState + " distance: "+str(getDistance(nextState)))
-                if not searchEncountered(nextState, encountered):
-                    frontier.append((nextState, solution, stepsTaken+1, stepsTaken+1+getDistance(nextState)))
+                inFrontier = searchFrontier(nextState, frontier)
+                heuristic = stepsTaken+1+getDistance(nextState)
+                if not (searchEncountered(nextState, encountered) or inFrontier):
+                    frontier.append((nextState, solution, stepsTaken+1, heuristic))
+                elif type(inFrontier) is tuple:
+                    if heuristic < inFrontier[3]:
+                        print(str((nextState, solution, stepsTaken+1, heuristic))+"---"+ str(inFrontier))
+                        frontier.append((nextState, solution, stepsTaken+1, heuristic))
                 solution = currStatetuple[1]
         # i += 1
         # if i == 10: break
     return "no solution found"
         
 # start = time.time()
-# content = '876543210'
-# # print(ifsolved(content))
-# # print(swap(content, -3, zero))
-# # print("input: "+content)
-# solution = aSearch(content)
-# print("dfS: " + str(solution[0]) + " states encountered: "+ str(solution[1])+ " steps found: "+ str(solution[2]))
+content = '302651478'
+# print(ifsolved(content))
+# print(swap(content, -3, zero))
+# print("input: "+content)
+solution = aSearch(content)
+print("dfS: " + str(solution[0]) + " states encountered: "+ str(solution[1])+ " steps found: "+ str(solution[2]))
 # print("time elapsed: " + str(time.time()-start))
 #find a way to get solution to show the right thing
 #fine a way to properly store the contents of encountered
