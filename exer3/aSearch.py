@@ -1,3 +1,4 @@
+import time
 def findZero(content):
     # returns the index of zero
     for i in range(0,9):
@@ -25,11 +26,11 @@ def availPaths(zero):
     validPaths = ''
     if zero-3 >= 0:
         validPaths = validPaths + 'U'
-    if int((zero+1)/3) == int(zero/3):
+    if int((zero+1)/3) == int(zero/3) and zero+1 <= 8:
         validPaths = validPaths + 'R'
     if zero+3 <= 8:
         validPaths = validPaths + 'D'
-    if int((zero-1)/3) == int(zero/3):
+    if int((zero-1)/3) == int(zero/3) and (zero-1) >= 0:
         validPaths = validPaths + 'L'
     # print(validPaths)
     return reversed(validPaths)
@@ -83,7 +84,7 @@ def aSearch(content):
         # print(str(frontier) + "\n")
         currStatetuple = frontier.pop(0)
         if ifsolved(currStatetuple[0]):
-            return (currStatetuple[1], len(encountered))
+            return (currStatetuple[1],  len(encountered), str(len(currStatetuple[1])-1))
         else: 
             solution = currStatetuple[1]
             currState = currStatetuple[0]
@@ -112,8 +113,13 @@ def aSearch(content):
         # if i == 10: break
     return "no solution found"
         
-# content = '123480765'
-# print(aSearch(content))
-
+# start = time.time()
+# content = '876543210'
+# # print(ifsolved(content))
+# # print(swap(content, -3, zero))
+# # print("input: "+content)
+# solution = aSearch(content)
+# print("dfS: " + str(solution[0]) + " states encountered: "+ str(solution[1])+ " steps found: "+ str(solution[2]))
+# print("time elapsed: " + str(time.time()-start))
 #find a way to get solution to show the right thing
 #fine a way to properly store the contents of encountered

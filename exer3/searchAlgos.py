@@ -1,3 +1,4 @@
+import time
 def findZero(content):
     # returns the index of zero
     for i in range(0,9):
@@ -8,11 +9,11 @@ def availPaths(zero):
     validPaths = ''
     if zero-3 >= 0:
         validPaths = validPaths + 'U'
-    if int((zero+1)/3) == int(zero/3):
+    if int((zero+1)/3) == int(zero/3) and zero+1 <= 8:
         validPaths = validPaths + 'R'
     if zero+3 <= 8:
         validPaths = validPaths + 'D'
-    if int((zero-1)/3) == int(zero/3):
+    if int((zero-1)/3) == int(zero/3) and zero-1 >= 0:
         validPaths = validPaths + 'L'
     # print(validPaths)
     return validPaths
@@ -63,7 +64,7 @@ def bFSearch(content):
         #then we check if the current state has already been encountered or solved
         if ifsolved(currStatetuple[0]):
             #return the solution path if solved
-            return (currStatetuple[1], len(encountered))
+            return (currStatetuple[1],  len(encountered), str(len(currStatetuple[1])-1))
         else: 
             #check if currstate has already been encountered. If not...
             solution = currStatetuple[1]
@@ -97,7 +98,7 @@ def dFSearch(content):
         currStatetuple = frontier.pop(0)
         if ifsolved(currStatetuple[0]):
             #return the solution path if solved
-            return (currStatetuple[1], len(encountered))
+            return (currStatetuple[1],  len(encountered), str(len(currStatetuple[1])-1))
         elif not searchEncountered(currStatetuple[0], encountered): 
             #check if currstate has already been encountered. If not...
             solution = currStatetuple[1]
@@ -122,12 +123,15 @@ def dFSearch(content):
                     frontier.insert(0, (nextState, solution))
                 solution = currStatetuple[1]
     return "no solution found"
-        
-# content = '230156478'
+
+# start = time.time()
+# content = '062153478'
 # print(ifsolved(content))
 # print(swap(content, -3, zero))
 # print("input: "+content)
-# print("dfS: " + str(dFSearch(content)))
+# solution = dFSearch(content)
+# print("bfS: " + str(solution[0]) + " states encountered: "+ str(solution[1])+ " steps found: "+ str(solution[2]))
+# print("time elapsed: " + str(time.time()-start))
 # print("bfS: " + str(bFSearch(content)))
 #find a way to get solution to show the right thing
 #fine a way to properly store the contents of encountered
