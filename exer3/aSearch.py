@@ -127,7 +127,6 @@ def aSearch(content):
                     frontier.append((nextState, solution, stepsTaken+1, heuristic))
                 elif type(inFrontier) is tuple:
                     if heuristic < inFrontier[3]:
-                        print(str((nextState, solution, stepsTaken+1, heuristic))+"---"+ str(inFrontier))
                         frontier.append((nextState, solution, stepsTaken+1, heuristic))
                 solution = currStatetuple[1]
         # i += 1
@@ -135,12 +134,12 @@ def aSearch(content):
     return "no solution found"
         
 # start = time.time()
-content = '302651478'
-# print(ifsolved(content))
-# print(swap(content, -3, zero))
-# print("input: "+content)
-solution = aSearch(content)
-print("dfS: " + str(solution[0]) + " states encountered: "+ str(solution[1])+ " steps found: "+ str(solution[2]))
+# content = '302651478'
+# # print(ifsolved(content))
+# # print(swap(content, -3, zero))
+# # print("input: "+content)
+# solution = aSearch(content)
+# print("dfS: " + str(solution[0]) + " states encountered: "+ str(solution[1])+ " steps found: "+ str(solution[2]))
 # print("time elapsed: " + str(time.time()-start))
 #find a way to get solution to show the right thing
 #fine a way to properly store the contents of encountered
